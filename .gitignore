@@ -1,33 +1,27 @@
+# Dependencies
 node_modules
-.DS_Store
-dist
-dist-ssr
-dist.zip
-dist.tar
-dist.war
-.nitro
-.output
-*-dist.zip
-*-dist.tar
-*-dist.war
-coverage
-*.local
-**/.vitepress/cache
-.cache
-.turbo
-.temp
-dev-dist
-.stylelintcache
+.pnpm-store
+.npm
+# Ignore lockfiles for other package managers to enforce pnpm
 yarn.lock
 package-lock.json
-.VSCodeCounter
-**/backend-mock/data
 
-# local env files
-.env.local
-.env.*.local
-.eslintcache
+# Build Outputs
+dist
+dist-ssr
+dist-types
+coverage
+.nitro
+.output
+dev-dist
 
+# Archives
+*.zip
+*.tar
+*.war
+*.gz
+
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -35,14 +29,28 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-vite.config.mts.*
-vite.config.mjs.*
-vite.config.js.*
-vite.config.ts.*
 
-# Editor directories and files
+# Caches & Temporary Files
+.cache
+.temp
+.turbo
+.eslintcache
+.stylelintcache
+**/.vitepress/cache
+
+# Environment Variables
+# Check .env.example into git, but ignore local env files
+.env.local
+.env.*.local
+*.local
+
+# IDEs & Editors
 .idea
-# .vscode
+.vscode
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
 *.suo
 *.ntvs*
 *.njsproj
@@ -50,3 +58,20 @@ vite.config.ts.*
 *.sw?
 .history
 .cursor
+.VSCodeCounter
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project Specific
+**/backend-mock/data
+vite.config.ts.*
+vite.config.js.*
+vite.config.mts.*
+vite.config.mjs.*
