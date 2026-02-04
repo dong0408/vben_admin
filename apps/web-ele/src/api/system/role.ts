@@ -20,8 +20,13 @@ export const deleteRoleApi = (id: string) => {
   return requestClient.delete(`/system/role/${id}`);
 };
 
-export const assignPermissionsApi = (roleId: string, permissionIds: string[]) => {
-  return requestClient.post(`/system/role/${roleId}/permissions`, { permissionIds });
+export const assignPermissionsApi = (
+  roleId: string,
+  permissionIds: string[],
+) => {
+  return requestClient.post(`/system/role/${roleId}/permissions`, {
+    permissionIds,
+  });
 };
 
 export const getRolePermissionsApi = (roleId: string) => {

@@ -1,9 +1,18 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElSpace, ElTable, ElTableColumn, ElTree, ElTag, ElSwitch } from 'element-plus';
+import {
+  ElButton,
+  ElCard,
+  ElMessage,
+  ElSpace,
+  ElSwitch,
+  ElTable,
+  ElTableColumn,
+  ElTag,
+} from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 
@@ -245,7 +254,7 @@ async function fetchTableData() {
   tableLoading.value = true;
   try {
     const { name, code, status } = searchFormData.value;
-    
+
     const filterNode = (node: PermissionItem) => {
       let match = true;
       if (name && !node.name.includes(name)) {
@@ -254,23 +263,21 @@ async function fetchTableData() {
       if (code && !node.code.includes(code)) {
         match = false;
       }
-      if (status !== '' && node.status !== parseInt(status)) {
+      if (status !== '' && node.status !== Number.parseInt(status)) {
         match = false;
       }
       return match;
     };
-    
+
     const filterTree = (nodes: PermissionItem[]): PermissionItem[] => {
-      return nodes
-        .filter(filterNode)
-        .map((node) => ({
-          ...node,
-          children: node.children ? filterTree(node.children) : undefined,
-        }));
+      return nodes.filter(filterNode).map((node) => ({
+        ...node,
+        children: node.children ? filterTree(node.children) : undefined,
+      }));
     };
-    
+
     tableData.value = filterTree(mockPermissions);
-  } catch (error) {
+  } catch {
     ElMessage.error('获取权限列表失败');
   } finally {
     tableLoading.value = false;
@@ -353,7 +360,12 @@ fetchTableData();
             <ElButton type="primary" @click="handleSearch">搜索</ElButton>
             <ElButton @click="handleReset">重置</ElButton>
             <ElButton type="primary" @click="handleAdd()">新增权限</ElButton>
-            <ElButton type="primary" @click="() => ElMessage.info('请选择父节点后再点击新增')">新增子权限</ElButton>
+            <ElButton
+              type="primary"
+              @click="() => ElMessage.info('请选择父节点后再点击新增')"
+            >
+              新增子权限
+            </ElButton>
           </ElSpace>
         </div>
       </div>
@@ -376,7 +388,12 @@ fetchTableData();
             </ElTag>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="path" label="路由路径" min-width="180" show-overflow-tooltip />
+        <ElTableColumn
+          prop="path"
+          label="路由路径"
+          min-width="180"
+          show-overflow-tooltip
+        />
         <ElTableColumn prop="sort" label="排序" width="80" />
         <ElTableColumn label="状态" width="100">
           <template #default="{ row }">
@@ -386,13 +403,39 @@ fetchTableData();
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="创建时间" min-width="180" />
-        <ElTableColumn prop="remark" label="备注" min-width="200" show-overflow-tooltip />
+        <ElTableColumn
+          prop="remark"
+          label="备注"
+          min-width="200"
+          show-overflow-tooltip
+        />
         <ElTableColumn label="操作" width="260" fixed="right">
           <template #default="{ row }">
             <ElSpace>
-              <ElButton type="primary" link size="small" @click="handleAdd(row.id)">新增子权限</ElButton>
-              <ElButton type="primary" link size="small" @click="handleEdit(row)">编辑</ElButton>
-              <ElButton type="danger" link size="small" @click="handleDelete(row)">删除</ElButton>
+              <ElButton
+                type="primary"
+                link
+                size="small"
+                @click="handleAdd(row.id)"
+              >
+                新增子权限
+              </ElButton>
+              <ElButton
+                type="primary"
+                link
+                size="small"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </ElButton>
+              <ElButton
+                type="danger"
+                link
+                size="small"
+                @click="handleDelete(row)"
+              >
+                删除
+              </ElButton>
               <ElSwitch
                 v-model="row.status"
                 :active-value="1"

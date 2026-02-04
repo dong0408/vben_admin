@@ -1,10 +1,15 @@
 <script lang="ts" setup>
+import type { CheckboxValueType } from 'element-plus';
+
 import { computed, ref, watch } from 'vue';
 
 import { ElButton, ElCard, ElCheckbox, ElMessage, ElTree } from 'element-plus';
-import type { CheckboxValueType } from 'element-plus';
 
-import { assignPermissionsApi, getPermissionListApi, getRolePermissionsApi } from '#/api';
+import {
+  assignPermissionsApi,
+  getPermissionListApi,
+  getRolePermissionsApi,
+} from '#/api';
 
 interface Props {
   roleId: string;
@@ -20,7 +25,7 @@ const treeRef = ref();
 const allPermissionIds = computed(() => {
   const ids: string[] = [];
   const traverse = (nodes: any[]) => {
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       ids.push(node.id);
       if (node.children) {
         traverse(node.children);
@@ -33,7 +38,7 @@ const allPermissionIds = computed(() => {
 
 async function loadPermissions() {
   if (!props.roleId) return;
-  
+
   loading.value = true;
   try {
     const [permissions, rolePermissions] = await Promise.all([
@@ -59,7 +64,7 @@ function handleCheckAllChange(checked: CheckboxValueType) {
 }
 
 function handleCheck(_data: any, checkedInfo: any) {
-  checkedKeys.value = (checkedInfo.checkedKeys || []).map((k: any) => String(k));
+  checkedKeys.value = (checkedInfo.checkedKeys || []).map(String);
 }
 
 watch(() => props.roleId, loadPermissions, { immediate: true });
@@ -72,8 +77,14 @@ watch(() => props.roleId, loadPermissions, { immediate: true });
         <span>权限列表</span>
         <div class="flex items-center gap-3">
           <ElCheckbox
-            :model-value="checkedKeys.length === allPermissionIds.length && allPermissionIds.length > 0"
-            :indeterminate="checkedKeys.length > 0 && checkedKeys.length < allPermissionIds.length"
+            :model-value="
+              checkedKeys.length === allPermissionIds.length &&
+              allPermissionIds.length > 0
+            "
+            :indeterminate="
+              checkedKeys.length > 0 &&
+              checkedKeys.length < allPermissionIds.length
+            "
             @change="handleCheckAllChange"
           >
             全选

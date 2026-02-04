@@ -3,7 +3,16 @@ import { ref } from 'vue';
 
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElMessage, ElTag, ElSpace, ElTable, ElTableColumn, ElSwitch } from 'element-plus';
+import {
+  ElButton,
+  ElCard,
+  ElMessage,
+  ElSpace,
+  ElSwitch,
+  ElTable,
+  ElTableColumn,
+  ElTag,
+} from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 
@@ -165,23 +174,25 @@ async function fetchTableData() {
   try {
     const { name, code, status } = searchFormData.value;
     let filteredData = [...mockRoles];
-    
+
     if (name) {
-      filteredData = filteredData.filter(item => item.name.includes(name));
+      filteredData = filteredData.filter((item) => item.name.includes(name));
     }
     if (code) {
-      filteredData = filteredData.filter(item => item.code.includes(code));
+      filteredData = filteredData.filter((item) => item.code.includes(code));
     }
     if (status !== '') {
-      filteredData = filteredData.filter(item => item.status === parseInt(status));
+      filteredData = filteredData.filter(
+        (item) => item.status === Number.parseInt(status),
+      );
     }
-    
+
     const start = (pagination.value.page - 1) * pagination.value.pageSize;
     const end = start + pagination.value.pageSize;
-    
+
     tableData.value = filteredData.slice(start, end);
     pagination.value.total = filteredData.length;
-  } catch (error) {
+  } catch {
     ElMessage.error('获取角色列表失败');
   } finally {
     tableLoading.value = false;
@@ -269,7 +280,9 @@ fetchTableData();
         :data="tableData"
         stripe
         border
-        @selection-change="(val: any) => selectedRowKeys = val.map((v: any) => v.id)"
+        @selection-change="
+          (val: any) => (selectedRowKeys = val.map((v: any) => v.id))
+        "
       >
         <ElTableColumn type="selection" width="55" />
         <ElTableColumn prop="name" label="角色名称" min-width="120" />
@@ -282,13 +295,39 @@ fetchTableData();
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="创建时间" min-width="180" />
-        <ElTableColumn prop="remark" label="备注" min-width="200" show-overflow-tooltip />
+        <ElTableColumn
+          prop="remark"
+          label="备注"
+          min-width="200"
+          show-overflow-tooltip
+        />
         <ElTableColumn label="操作" width="260" fixed="right">
           <template #default="{ row }">
             <ElSpace>
-              <ElButton type="primary" link size="small" @click="handleAssignPermission(row)">分配权限</ElButton>
-              <ElButton type="primary" link size="small" @click="handleEdit(row)">编辑</ElButton>
-              <ElButton type="danger" link size="small" @click="handleDelete(row)">删除</ElButton>
+              <ElButton
+                type="primary"
+                link
+                size="small"
+                @click="handleAssignPermission(row)"
+              >
+                分配权限
+              </ElButton>
+              <ElButton
+                type="primary"
+                link
+                size="small"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </ElButton>
+              <ElButton
+                type="danger"
+                link
+                size="small"
+                @click="handleDelete(row)"
+              >
+                删除
+              </ElButton>
               <ElSwitch
                 v-model="row.status"
                 :active-value="1"
@@ -354,7 +393,15 @@ fetchTableData();
       <template #footer>
         <ElSpace>
           <ElButton @click="permissionDrawerApi.close">取消</ElButton>
-          <ElButton type="primary" @click="ElMessage.success('权限分配成功'); permissionDrawerApi.close()">保存</ElButton>
+          <ElButton
+            type="primary"
+            @click="
+              ElMessage.success('权限分配成功');
+              permissionDrawerApi.close();
+            "
+          >
+            保存
+          </ElButton>
         </ElSpace>
       </template>
     </PermissionDrawer>
