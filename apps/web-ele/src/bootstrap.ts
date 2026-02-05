@@ -15,6 +15,7 @@ import { $t, setupI18n } from '#/locales';
 import { initComponentAdapter } from './adapter/component';
 import { initSetupVbenForm } from './adapter/form';
 import App from './app.vue';
+import { registerAuthDirective } from './directives/auth';
 import { router } from './router';
 
 async function bootstrap(namespace: string) {
@@ -51,6 +52,9 @@ async function bootstrap(namespace: string) {
 
   // 安装权限指令
   registerAccessDirective(app);
+  
+  // 注册自定义 v-auth 指令
+  registerAuthDirective(app);
 
   // 初始化 tippy
   const { initTippy } = await import('@vben/common-ui/es/tippy');
