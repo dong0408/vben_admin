@@ -16,7 +16,7 @@ function isAuth(el: Element, binding: DirectiveBinding) {
     authValues.some((code) => accessCodes.includes(code));
 
   if (!hasAuth && el.parentNode) {
-    el.parentNode.removeChild(el);
+    el.remove();
   }
 }
 

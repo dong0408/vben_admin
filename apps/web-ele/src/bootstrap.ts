@@ -52,7 +52,7 @@ async function bootstrap(namespace: string) {
 
   // 安装权限指令
   registerAccessDirective(app);
-  
+
   // 注册自定义 v-auth 指令
   registerAuthDirective(app);
 
