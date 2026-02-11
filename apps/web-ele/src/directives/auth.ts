@@ -28,3 +28,13 @@ const authDirective: Directive = {
 export function registerAuthDirective(app: App) {
   app.directive('auth', authDirective);
 }
+
+
+
+/**
+ * <!-- 单个权限 -->
+<el-button v-auth="'system:user:add'">新增用户</el-button>
+
+<!-- 多个权限（只要满足其一） -->
+<el-button v-auth="['system:user:edit', 'system:user:update']">编辑用户</el-button>
+ */

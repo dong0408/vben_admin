@@ -104,7 +104,7 @@ const logoSrc = computed(() => {
     </slot>
 
     <!-- 系统介绍 -->
-    <div v-if="!authPanelCenter" class="relative hidden w-0 flex-1 lg:block">
+    <!-- <div v-if="!authPanelCenter" class="relative hidden w-0 flex-1 lg:block">
       <div
         class="bg-background-deep absolute inset-0 h-full w-full dark:bg-[#070709]"
       >
@@ -133,7 +133,7 @@ const logoSrc = computed(() => {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 中心认证面板 -->
     <div v-if="authPanelCenter" class="flex-center relative w-full">
