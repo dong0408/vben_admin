@@ -188,7 +188,9 @@ onUnmounted(() => {
               </ElInput>
             </div>
             <div class="flex items-center justify-between">
-              <label class="w-10 text-sm font-medium text-gray-700">验证码</label>
+              <label class="w-10 text-sm font-medium text-gray-700"
+                >验证码</label
+              >
               <div class="flex !w-[346px] gap-2">
                 <ElInput
                   v-model="form.code"
