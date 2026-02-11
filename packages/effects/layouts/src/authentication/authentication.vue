@@ -7,7 +7,6 @@ import { preferences, usePreferences } from '@vben/preferences';
 
 import { Copyright } from '../basic/copyright';
 import AuthenticationFormView from './form.vue';
-import SloganIcon from './icons/slogan.vue';
 import Toolbar from './toolbar.vue';
 
 interface Props {

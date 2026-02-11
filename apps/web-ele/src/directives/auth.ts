@@ -29,8 +29,6 @@ export function registerAuthDirective(app: App) {
   app.directive('auth', authDirective);
 }
 
-
-
 /**
  * <!-- 单个权限 -->
 <el-button v-auth="'system:user:add'">新增用户</el-button>

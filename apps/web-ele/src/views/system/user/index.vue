@@ -7,12 +7,12 @@ import {
   ElButton,
   ElCard,
   ElMessage,
+  ElPopconfirm,
   ElSpace,
   ElSwitch,
   ElTable,
   ElTableColumn,
   ElTag,
-  ElPopconfirm,
 } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
@@ -81,7 +81,7 @@ const [UserForm, userApi] = useVbenForm({
       label: '昵称',
       rules: 'required',
     },
-     {
+    {
       component: 'Input',
       fieldName: 'email',
       label: '邮箱',
@@ -94,11 +94,11 @@ const [UserForm, userApi] = useVbenForm({
       rules: 'required',
       componentProps: {
         options: [
-            { value: '超级管理员', label: '超级管理员' },
-            { value: '普通用户', label: '普通用户' },
-            { value: '访客', label: '访客' },
-        ]
-      }
+          { value: '超级管理员', label: '超级管理员' },
+          { value: '普通用户', label: '普通用户' },
+          { value: '访客', label: '访客' },
+        ],
+      },
     },
     {
       component: 'RadioGroup',
@@ -125,7 +125,7 @@ const [UserModal, userModalApi] = useVbenModal({
 const tableLoading = ref(false);
 const tableData = ref<UserItem[]>([]);
 const selectedRowKeys = ref<string[]>([]);
-const editId = ref<string | null>(null);
+const editId = ref<null | string>(null);
 
 const pagination = ref({
   page: 1,
@@ -159,14 +159,14 @@ const mockUsers: UserItem[] = [
     email: 'test@example.com',
   },
   {
-      id: '3',
-      username: 'guest',
-      nickname: '访客用户',
-      role: '访客',
-      status: 0,
-      createTime: '2024-01-03 12:00:00',
-      email: 'guest@example.com',
-  }
+    id: '3',
+    username: 'guest',
+    nickname: '访客用户',
+    role: '访客',
+    status: 0,
+    createTime: '2024-01-03 12:00:00',
+    email: 'guest@example.com',
+  },
 ];
 
 async function fetchTableData() {
@@ -176,10 +176,14 @@ async function fetchTableData() {
     let filteredData = [...mockUsers];
 
     if (username) {
-      filteredData = filteredData.filter((item) => item.username.includes(username));
+      filteredData = filteredData.filter((item) =>
+        item.username.includes(username),
+      );
     }
     if (nickname) {
-      filteredData = filteredData.filter((item) => item.nickname.includes(nickname));
+      filteredData = filteredData.filter((item) =>
+        item.nickname.includes(nickname),
+      );
     }
     if (status !== '') {
       filteredData = filteredData.filter(
@@ -220,21 +224,21 @@ function handleAdd() {
   editId.value = null;
   userApi.resetForm();
   userModalApi.open();
-   userModalApi.setState({ title: '新增用户' });
+  userModalApi.setState({ title: '新增用户' });
 }
 
 function handleEdit(row: UserItem) {
   editId.value = row.id;
-  
+
   // Set values needs to match schema field names
   userApi.setValues({
-      username: row.username,
-      nickname: row.nickname,
-      email: row.email,
-      role: row.role,
-      status: row.status,
+    username: row.username,
+    nickname: row.nickname,
+    email: row.email,
+    role: row.role,
+    status: row.status,
   });
-  
+
   userModalApi.open();
   userModalApi.setState({ title: '编辑用户' });
 }
@@ -249,15 +253,15 @@ function handleStatusChange(row: UserItem) {
 }
 
 async function handleUserSubmit() {
-    const { valid } = await userApi.validate();
-    if (!valid) return;
-    
-    const values = await userApi.getValues();
-    console.log('Submit values:', values, 'Edit ID:', editId.value);
-    
-    ElMessage.success(editId.value ? '用户更新成功' : '用户创建成功');
-    userModalApi.close();
-    fetchTableData();
+  const { valid } = await userApi.validate();
+  if (!valid) return;
+
+  const values = await userApi.getValues();
+  console.log('Submit values:', values, 'Edit ID:', editId.value);
+
+  ElMessage.success(editId.value ? '用户更新成功' : '用户创建成功');
+  userModalApi.close();
+  fetchTableData();
 }
 
 function handlePageChange(page: number) {
@@ -304,9 +308,9 @@ fetchTableData();
         <ElTableColumn prop="username" label="用户名" min-width="120" />
         <ElTableColumn prop="nickname" label="昵称" min-width="120" />
         <ElTableColumn prop="role" label="角色" min-width="120">
-             <template #default="{ row }">
-                 <ElTag>{{ row.role }}</ElTag>
-             </template>
+          <template #default="{ row }">
+            <ElTag>{{ row.role }}</ElTag>
+          </template>
         </ElTableColumn>
         <ElTableColumn prop="email" label="邮箱" min-width="150" />
         <ElTableColumn label="状态" width="100">
@@ -328,21 +332,15 @@ fetchTableData();
               >
                 编辑
               </ElButton>
-               <ElPopconfirm
+              <ElPopconfirm
                 title="确认删除该用户吗?"
                 @confirm="handleDelete(row)"
               >
                 <template #reference>
-                  <ElButton
-                    type="danger"
-                    link
-                    size="small"
-                  >
-                    删除
-                  </ElButton>
+                  <ElButton type="danger" link size="small"> 删除 </ElButton>
                 </template>
               </ElPopconfirm>
-              
+
               <ElSwitch
                 v-model="row.status"
                 :active-value="1"

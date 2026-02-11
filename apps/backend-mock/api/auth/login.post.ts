@@ -1,15 +1,8 @@
-import { defineEventHandler, readBody, setResponseStatus } from 'h3';
-import {
-  clearRefreshTokenCookie,
-  setRefreshTokenCookie,
-} from '~/utils/cookie-utils';
+import { defineEventHandler, readBody } from 'h3';
+import { setRefreshTokenCookie } from '~/utils/cookie-utils';
 import { generateAccessToken, generateRefreshToken } from '~/utils/jwt-utils';
 import { MOCK_USERS } from '~/utils/mock-data';
-import {
-  forbiddenResponse,
-  useResponseError,
-  useResponseSuccess,
-} from '~/utils/response';
+import { useResponseSuccess } from '~/utils/response';
 
 export default defineEventHandler(async (event) => {
   const { password, username } = await readBody(event);
