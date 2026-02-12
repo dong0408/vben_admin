@@ -15,9 +15,9 @@ export default defineConfig(async () => {
         proxy: {
           '/api': {
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
-            // mock代理目标地址
-            target: 'http://localhost:5320/api',
+            rewrite: (path) => path.replace(/^\/api/, '/api'), // Keep /api prefix if backend needs it, or remove if not. Interface says http://192.168.0.4:2888/api/blade-auth/..., so we likely need /api mapped to /api or just base path.
+            // Let's assume /api in frontend maps to /api in backend.
+            target: 'http://192.168.0.4:2888',
             ws: true,
           },
         },

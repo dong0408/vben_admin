@@ -47,7 +47,7 @@ export const defaultResponseInterceptor = ({
 export const authenticateResponseInterceptor = ({
   client,
   doReAuthenticate,
-  doRefreshToken,
+  // doRefreshToken,
   enableRefreshToken,
   formatToken,
 }: {
@@ -86,10 +86,10 @@ export const authenticateResponseInterceptor = ({
       config.__isRetryRequest = true;
 
       try {
-        const newToken = await doRefreshToken();
+        // const newToken = await doRefreshToken();
 
         // 处理队列中的请求
-        client.refreshTokenQueue.forEach((callback) => callback(newToken));
+        // client.refreshTokenQueue.forEach((callback) => callback(newToken));
         // 清空队列
         client.refreshTokenQueue = [];
 

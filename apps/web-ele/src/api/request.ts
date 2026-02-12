@@ -17,7 +17,7 @@ import { ElMessage } from 'element-plus';
 
 import { useAuthStore } from '#/store';
 
-import { refreshTokenApi } from './core';
+// import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
@@ -41,23 +41,23 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     ) {
       accessStore.setLoginExpired(true);
     } else {
-      await authStore.logout();
+      await authStore.logout(true, false);
     }
   }
 
   /**
    * 刷新token逻辑
    */
-  async function doRefreshToken() {
-    const accessStore = useAccessStore();
-    const resp = await refreshTokenApi();
-    const newToken = resp.data;
-    accessStore.setAccessToken(newToken);
-    return newToken;
-  }
+  // async function doRefreshToken() {
+  //   const accessStore = useAccessStore();
+  //   const resp = await refreshTokenApi();
+  //   const newToken = resp.data;
+  //   accessStore.setAccessToken(newToken);
+  //   return newToken;
+  // }
 
   function formatToken(token: null | string) {
-    return token ? `Bearer ${token}` : null;
+    return token ? `Bearer ${token}` : 'Basic c2FiZXI6c2FiZXJfc2VjcmV0';
   }
 
   // 请求头处理
@@ -65,7 +65,14 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
 
-      config.headers.Authorization = formatToken(accessStore.accessToken);
+      if (!config.headers.Authorization) {
+        if (accessStore.accessToken) {
+          config.headers.Authorization = formatToken(accessStore.accessToken);
+        } else {
+          config.headers.Authorization = 'Basic c2FiZXI6c2FiZXJfc2VjcmV0';
+        }
+      }
+
       config.headers['Accept-Language'] = preferences.app.locale;
       return config;
     },
@@ -76,7 +83,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     defaultResponseInterceptor({
       codeField: 'code',
       dataField: 'data',
-      successCode: 0,
+      successCode: 200,
     }),
   );
 
@@ -85,7 +92,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     authenticateResponseInterceptor({
       client,
       doReAuthenticate,
-      doRefreshToken,
+      // doRefreshToken,
       enableRefreshToken: preferences.app.enableRefreshToken,
       formatToken,
     }),
@@ -94,6 +101,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
+      console.log(error,'nihao');
+      
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 当前mock接口返回的错误字段是 error 或者 message
       const responseData = error?.response?.data ?? {};

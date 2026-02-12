@@ -13,12 +13,17 @@ import { defineStore } from 'pinia';
 import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
+import { sm2 } from 'sm-crypto';
+
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
   const router = useRouter();
 
   const loginLoading = ref(false);
+
+  const publicKey =
+    '04969f1a494fafc1e5075dd0562924d773dbcefb726f11ac45adc4abea445a8fec6ef75266070f9c20782c9b686c992d83b5f5670bfe6f56f5e05a1e9ac53a2a4f';
 
   /**
    * 异步处理登录操作
@@ -29,27 +34,46 @@ export const useAuthStore = defineStore('auth', () => {
     params: Recordable<any>,
     onSuccess?: () => Promise<void> | void,
   ) {
-    // 异步处理用户登录操作并获取 accessToken
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
 
-      // 如果成功获取到 accessToken
+      // Encrypt password if present
+      let encryptedPassword = params.password;
+      if (params.password) {
+        encryptedPassword = '04' + sm2.doEncrypt(params.password, publicKey, 0);
+      }
+
+      // Prepare login params matching API interface
+      const loginParams = {
+        account: params.username,
+        password: encryptedPassword,
+        type: 'account',
+        grantType: '', // Leave empty to disable captcha for now, or 'captcha' if implemented
+      };
+
+      // For Code Login (if mobile/code passed), adjust params?
+      // "type String 登录类型。非必填，web端建议填“account”"
+      // If code login, maybe type is different or grantType is different?
+      // Interface doc mainly describes account login.
+      // Assuming for now this covers account login.
+
+      const { accessToken } = await loginApi(loginParams);
+
       if (accessToken) {
-        // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
 
-        // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
+        // Fetch user info
+        // Fetch user info (which now mocks permissions)
+        const [fetchUserInfoResult] = await Promise.all([
           fetchUserInfo(),
-          getAccessCodesApi(),
+          // getAccessCodesApi(), // Skip real API for now
         ]);
 
         userInfo = fetchUserInfoResult;
-
-        userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
+        // userStore.setUserInfo(userInfo); // Already done in fetchUserInfo
+        // accessStore.setAccessCodes(accessCodes); // Already done in fetchUserInfo        
+        // ... rest of success logic
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -78,11 +102,13 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
-  async function logout(redirect: boolean = true) {
-    try {
-      await logoutApi();
-    } catch {
-      // 不做任何处理
+  async function logout(redirect: boolean = true, callApi: boolean = true) {
+    if (callApi) {
+      try {
+        await logoutApi();
+      } catch {
+        // 不做任何处理
+      }
     }
     resetAllStores();
     accessStore.setLoginExpired(false);
@@ -99,9 +125,22 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
+    // Mock UserInfo for now as per user request to "open all permissions"
+    const userInfo: UserInfo = {
+      userId: '1',
+      username: 'admin',
+      realName: 'Admin',
+      avatar: 'https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp',
+      roles: ['super'],
+      homePath: '/dashboard', // Adjust if project has different home
+    };
+    
+    // userInfo = await getUserInfoApi(); // Keep commented as per user edit
     userStore.setUserInfo(userInfo);
+    
+    // Set global access codes to allow everything
+    accessStore.setAccessCodes(['*']);
+    
     return userInfo;
   }
 
