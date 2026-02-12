@@ -66,11 +66,9 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const accessStore = useAccessStore();
 
       if (!config.headers.Authorization) {
-        if (accessStore.accessToken) {
-          config.headers.Authorization = formatToken(accessStore.accessToken);
-        } else {
-          config.headers.Authorization = 'Basic c2FiZXI6c2FiZXJfc2VjcmV0';
-        }
+        config.headers.Authorization = accessStore.accessToken
+          ? formatToken(accessStore.accessToken)
+          : 'Basic c2FiZXI6c2FiZXJfc2VjcmV0';
       }
 
       config.headers['Accept-Language'] = preferences.app.locale;
@@ -101,8 +99,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
-      console.log(error,'nihao');
-      
+      console.log(error, 'nihao');
+
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 当前mock接口返回的错误字段是 error 或者 message
       const responseData = error?.response?.data ?? {};

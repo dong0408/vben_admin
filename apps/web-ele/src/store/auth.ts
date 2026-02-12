@@ -9,11 +9,10 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
 import { ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
-
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
-import { $t } from '#/locales';
-
 import { sm2 } from 'sm-crypto';
+
+import { loginApi, logoutApi } from '#/api';
+import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
@@ -41,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
       // Encrypt password if present
       let encryptedPassword = params.password;
       if (params.password) {
-        encryptedPassword = '04' + sm2.doEncrypt(params.password, publicKey, 0);
+        encryptedPassword = `04${sm2.doEncrypt(params.password, publicKey, 0)}`;
       }
 
       // Prepare login params matching API interface
@@ -72,7 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         userInfo = fetchUserInfoResult;
         // userStore.setUserInfo(userInfo); // Already done in fetchUserInfo
-        // accessStore.setAccessCodes(accessCodes); // Already done in fetchUserInfo        
+        // accessStore.setAccessCodes(accessCodes); // Already done in fetchUserInfo
         // ... rest of success logic
 
         if (accessStore.loginExpired) {
@@ -130,17 +129,18 @@ export const useAuthStore = defineStore('auth', () => {
       userId: '1',
       username: 'admin',
       realName: 'Admin',
-      avatar: 'https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp',
+      avatar:
+        'https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp',
       roles: ['super'],
       homePath: '/dashboard', // Adjust if project has different home
     };
-    
+
     // userInfo = await getUserInfoApi(); // Keep commented as per user edit
     userStore.setUserInfo(userInfo);
-    
+
     // Set global access codes to allow everything
     accessStore.setAccessCodes(['*']);
-    
+
     return userInfo;
   }
 
