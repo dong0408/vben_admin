@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { VbenButton, VbenCheckbox } from '@vben/common-ui';
@@ -12,7 +12,7 @@ import HelloImg from '../../../assets/images/hello.png';
 
 defineOptions({ name: 'LoginForm' });
 
-const emit = defineEmits(['register', 'forget-password']);
+const emit = defineEmits(['register', 'forget-password', 'code-login']);
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -20,32 +20,20 @@ const router = useRouter();
 const form = reactive({
   username: '',
   password: '',
-  mobile: '',
-  code: '',
   rememberMe: false,
 });
 
 const loading = ref(false);
-const loginType = ref('account');
 
 async function handleLogin() {
-  // Basic validation based on type
-  if (loginType.value === 'account') {
-    if (!form.username || !form.password) return;
-  } else {
-    if (!form.mobile || !form.code) return;
-  }
+  if (!form.username || !form.password) return;
 
   try {
     loading.value = true;
-
-    // Map mobile/code to username/password for the universal mock auth
-    const loginParams =
-      loginType.value === 'account'
-        ? { username: form.username, password: form.password }
-        : { username: form.mobile, password: form.code };
-
-    await authStore.authLogin(loginParams);
+    await authStore.authLogin({
+      username: form.username,
+      password: form.password,
+    });
   } finally {
     loading.value = false;
   }
@@ -54,37 +42,6 @@ async function handleLogin() {
 function handleGo(path: string) {
   router.push(path);
 }
-
-const countDown = ref(0);
-const sendCodeText = computed(() => {
-  return countDown.value > 0 ? `${countDown.value}秒后重新获取` : '获取验证码';
-});
-
-let timer: NodeJS.Timeout | null = null;
-
-async function handleSendCode() {
-  if (countDown.value > 0 || !form.mobile) return;
-
-  // Simulate sending code
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-    countDown.value = 60;
-    timer = setInterval(() => {
-      countDown.value--;
-      if (countDown.value <= 0 && timer) {
-        clearInterval(timer);
-      }
-    }, 1000);
-
-    // Auto-fill code for convenience in dev/mock environment
-    form.code = '123456';
-  }, 1000);
-}
-
-onUnmounted(() => {
-  if (timer) clearInterval(timer);
-});
 </script>
 
 <template>
@@ -107,64 +64,30 @@ onUnmounted(() => {
     </div>
 
     <!-- Form -->
-    <form @submit.prevent="handleLogin" class="space-y-10">
-      <template v-if="loginType === 'account'">
-        <!-- Username -->
-        <div class="flex items-center justify-between">
-          <label class="w-10 text-sm font-medium text-gray-700">账号</label>
-          <ElInput
-            v-model="form.username"
-            placeholder="请输入账号"
-            class="!h-[40px] !w-[346px] text-base"
-            size="large"
-          />
-        </div>
+    <form @submit.prevent="handleLogin" class="space-y-8">
+      <!-- Username -->
+      <div class="flex items-center justify-between">
+        <label class="w-10 text-sm font-medium text-gray-700">账号</label>
+        <ElInput
+          v-model="form.username"
+          placeholder="请输入账号"
+          class="!h-[40px] !w-[346px] text-base"
+          size="large"
+        />
+      </div>
 
-        <!-- Password -->
-        <div class="flex items-center justify-between">
-          <label class="w-10 text-sm font-medium text-gray-700">密码</label>
-          <ElInput
-            v-model="form.password"
-            type="password"
-            show-password
-            placeholder="请输入密码"
-            class="!h-[40px] !w-[346px] text-base shadow-sm"
-            size="large"
-          />
-        </div>
-      </template>
-
-      <template v-if="loginType === 'mobile'">
-        <!-- Mobile Input placeholder to maintain layout -->
-        <div class="flex items-center justify-between">
-          <label class="w-10 text-sm font-medium text-gray-700">手机</label>
-          <ElInput
-            v-model="form.mobile"
-            placeholder="请输入手机号"
-            class="!h-[40px] !w-[346px] text-base"
-            size="large"
-          />
-        </div>
-        <div class="flex items-center justify-between">
-          <label class="w-10 text-sm font-medium text-gray-700">验证码</label>
-          <div class="flex !w-[346px] gap-2">
-            <ElInput
-              v-model="form.code"
-              placeholder="验证码"
-              class="!h-[40px] flex-1 text-base"
-              size="large"
-            />
-            <VbenButton
-              class="!h-[40px] w-[110px]"
-              variant="default"
-              :disabled="countDown > 0 || !form.mobile"
-              @click="handleSendCode"
-            >
-              {{ sendCodeText }}
-            </VbenButton>
-          </div>
-        </div>
-      </template>
+      <!-- Password -->
+      <div class="flex items-center justify-between">
+        <label class="w-10 text-sm font-medium text-gray-700">密码</label>
+        <ElInput
+          v-model="form.password"
+          type="password"
+          show-password
+          placeholder="请输入密码"
+          class="!h-[40px] !w-[346px] text-base shadow-sm"
+          size="large"
+        />
+      </div>
 
       <!-- Remember & Forgot -->
       <div class="my-8 flex items-center justify-between pl-2">
@@ -189,6 +112,18 @@ onUnmounted(() => {
           variant="default"
         >
           登录
+        </VbenButton>
+      </div>
+
+      <!-- Switch to Code Login -->
+      <div class="text-center">
+        <VbenButton
+          type="button"
+          variant="link"
+          class="text-sm font-medium text-primary hover:underline"
+          @click="$emit('code-login')"
+        >
+          验证码登录 >
         </VbenButton>
       </div>
 

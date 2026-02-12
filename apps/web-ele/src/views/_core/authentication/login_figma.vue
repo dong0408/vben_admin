@@ -2,19 +2,23 @@
 import { computed, ref } from 'vue';
 
 import IllustrationImg from '../../../assets/images/login-illustration.png';
+import CodeLoginForm from './code-login-form.vue';
 import ForgetPasswordWrapper from './forget-password-form.vue';
 import LoginForm from './login-form.vue';
 import RegisterForm from './register-form.vue';
 
 defineOptions({ name: 'LoginFigma' });
 
-// View State: 'login' | 'register' | 'forget'
-const currentView = ref<'forget' | 'login' | 'register'>('login');
+// View State: 'login' | 'register' | 'forget' | 'code-login'
+const currentView = ref<'code-login' | 'forget' | 'login' | 'register'>(
+  'login',
+);
 
 const componentMap = {
   login: LoginForm,
   register: RegisterForm,
   forget: ForgetPasswordWrapper,
+  'code-login': CodeLoginForm,
 };
 
 const currentComponent = computed(() => componentMap[currentView.value]);
@@ -25,6 +29,10 @@ function handleGoToRegister() {
 
 function handleGoToForget() {
   currentView.value = 'forget';
+}
+
+function handleGoToCodeLogin() {
+  currentView.value = 'code-login';
 }
 
 function handleBackToLogin() {
@@ -67,6 +75,8 @@ function handleBackToLogin() {
           :is="currentComponent"
           @register="handleGoToRegister"
           @forget-password="handleGoToForget"
+          @code-login="handleGoToCodeLogin"
+          @account-login="handleBackToLogin"
           @back="handleBackToLogin"
         />
       </Transition>
