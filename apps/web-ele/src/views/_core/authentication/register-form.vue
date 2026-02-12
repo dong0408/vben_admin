@@ -51,7 +51,9 @@ async function handleRegister() {
     <form @submit.prevent="handleRegister" class="space-y-4">
       <!-- Company ID -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">公司ID</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >公司ID</label
+        >
         <ElInput
           v-model="form.companyId"
           placeholder="请输入"
@@ -62,7 +64,9 @@ async function handleRegister() {
 
       <!-- Name -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">姓名</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >姓名</label
+        >
         <ElInput
           v-model="form.name"
           placeholder="请输入"
@@ -73,7 +77,9 @@ async function handleRegister() {
 
       <!-- Mobile -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">账号</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >账号</label
+        >
         <ElInput
           v-model="form.mobile"
           placeholder="请输入手机号"
@@ -84,7 +90,9 @@ async function handleRegister() {
 
       <!-- Email -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">邮箱</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >邮箱</label
+        >
         <ElInput
           v-model="form.email"
           placeholder="请输入"
@@ -97,7 +105,8 @@ async function handleRegister() {
       <div class="flex items-start justify-between">
         <label
           class="mt-2 w-[70px] text-right text-sm font-medium text-[#303133]"
-          >申请原因</label>
+          >申请原因</label
+        >
         <ElInput
           v-model="form.reason"
           type="textarea"

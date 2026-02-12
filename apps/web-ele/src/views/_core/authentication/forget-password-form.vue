@@ -89,7 +89,9 @@ onUnmounted(() => {
     <form @submit.prevent="handleReset" class="space-y-6">
       <!-- Account (Mobile) -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">账号</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >账号</label
+        >
         <ElInput
           v-model="form.mobile"
           placeholder="请输入手机号"
@@ -100,7 +102,9 @@ onUnmounted(() => {
 
       <!-- Verification Code -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">验证码</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >验证码</label
+        >
         <div class="flex !w-[290px] gap-2">
           <ElInput
             v-model="form.code"
@@ -121,7 +125,9 @@ onUnmounted(() => {
 
       <!-- New Password -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">设置密码</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >设置密码</label
+        >
         <ElInput
           v-model="form.password"
           type="password"
@@ -134,7 +140,9 @@ onUnmounted(() => {
 
       <!-- Confirm Password -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]">确认密码</label>
+        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+          >确认密码</label
+        >
         <ElInput
           v-model="form.confirmPassword"
           type="password"
