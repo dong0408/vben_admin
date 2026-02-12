@@ -51,7 +51,7 @@ async function handleRegister() {
     <form @submit.prevent="handleRegister" class="space-y-4">
       <!-- Company ID -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+        <label class="w-[70px] text-left text-sm font-medium text-[#303133]"
           >公司ID</label
         >
         <ElInput
@@ -64,7 +64,7 @@ async function handleRegister() {
 
       <!-- Name -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+        <label class="w-[70px] text-left text-sm font-medium text-[#303133]"
           >姓名</label
         >
         <ElInput
@@ -77,7 +77,7 @@ async function handleRegister() {
 
       <!-- Mobile -->
       <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
+        <label class="w-[70px] text-left text-sm font-medium text-[#303133]"
           >账号</label
         >
         <ElInput
@@ -88,23 +88,10 @@ async function handleRegister() {
         />
       </div>
 
-      <!-- Email -->
-      <div class="flex items-center justify-between">
-        <label class="w-[70px] text-right text-sm font-medium text-[#303133]"
-          >邮箱</label
-        >
-        <ElInput
-          v-model="form.email"
-          placeholder="请输入"
-          class="!h-[40px] !w-[290px] text-base"
-          size="large"
-        />
-      </div>
-
       <!-- Reason (Textarea) -->
       <div class="flex items-start justify-between">
         <label
-          class="mt-2 w-[70px] text-right text-sm font-medium text-[#303133]"
+          class="mt-2 w-[70px] text-left text-sm font-medium text-[#303133]"
           >申请原因</label
         >
         <ElInput
@@ -122,23 +109,26 @@ async function handleRegister() {
         结果以短信形式发送到您的手机，请注意查收！
       </p>
 
-      <!-- Actions -->
-      <div class="flex items-center justify-between gap-4 pt-4">
+      <!-- Return to Login Link -->
+      <div class="flex items-center justify-end">
+        <a
+          href="javascript:void(0)"
+          class="text-sm font-medium text-primary hover:underline"
+          @click="$emit('back')"
+        >
+          返回登录
+        </a>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="my-8">
         <VbenButton
           type="submit"
-          class="h-10 flex-1 text-[18px] font-medium shadow-md"
+          class="h-10 w-full text-[18px] font-medium shadow-md transition-all active:scale-[0.98]"
           :loading="loading"
           variant="default"
         >
           申请注册
-        </VbenButton>
-        <VbenButton
-          type="button"
-          class="h-10 w-[100px] text-[18px] font-medium"
-          variant="secondary"
-          @click="$emit('back')"
-        >
-          返回登录
         </VbenButton>
       </div>
     </form>
