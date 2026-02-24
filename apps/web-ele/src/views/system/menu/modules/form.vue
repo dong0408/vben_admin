@@ -23,13 +23,14 @@ import {
 } from '#/api/system/menu';
 import { $t } from '#/locales';
 
-const componentKeys: string[] = [];
-
 import { getMenuTypeOptions } from '../data';
 
 const emit = defineEmits<{
   success: [];
 }>();
+
+const componentKeys: string[] = [];
+
 const formData = ref<SystemMenuApi.SystemMenu>();
 const titleSuffix = ref<string>();
 const schema: VbenFormSchema[] = [
