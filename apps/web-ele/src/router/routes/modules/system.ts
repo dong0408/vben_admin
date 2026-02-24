@@ -28,6 +28,15 @@ const routes: RouteRecordRaw[] = [
           title: '用户管理',
         },
       },
+      {
+        name: 'MenuManagement',
+        path: '/system/menu',
+        component: () => import('#/views/system/menu/list.vue'),
+        meta: {
+          icon: 'lucide:menu',
+          title: '菜单管理',
+        },
+      },
     ],
   },
 ];
