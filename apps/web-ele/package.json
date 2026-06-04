@@ -30,6 +30,7 @@
     "@vueuse/core": "catalog:",
     "dayjs": "catalog:",
     "element-plus": "catalog:",
+    "maptalks": "^1.12.1",
     "pinia": "catalog:",
     "sm-crypto": "^0.3.13",
     "vue": "catalog:",

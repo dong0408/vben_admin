@@ -36,3 +36,10 @@ export const getRolePermissionsApi = (roleId: string) => {
 export const getPermissionListApi = () => {
   return requestClient.get('/system/permission/list');
 };
+
+export async function updatePasswordApi(data: any) {
+  // 如果后端需要通过 URL Query 接收参数（@RequestParam）
+  return requestClient.post('/blade-system/user/update-password', null, {
+    params: data,
+  });
+}

@@ -7,6 +7,8 @@ import { ProfilePasswordSetting, z } from '@vben/common-ui';
 
 import { ElMessage } from 'element-plus';
 
+import { updatePasswordApi } from '#/api/system/role';
+
 const profilePasswordSettingRef = ref();
 
 const formSchema = computed((): VbenFormSchema[] => {
@@ -52,8 +54,13 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit() {
-  ElMessage.success('密码修改成功');
+async function handleSubmit(values: any) {
+  try {
+    await updatePasswordApi(values);
+    ElMessage.success('密码修改成功');
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 <template>

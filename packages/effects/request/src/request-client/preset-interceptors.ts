@@ -132,6 +132,7 @@ export const errorMessageResponseInterceptor = (
 
       let errorMessage = '';
       const status = error?.response?.status;
+      console.log('ssssss');
 
       switch (status) {
         case 400: {
@@ -158,6 +159,8 @@ export const errorMessageResponseInterceptor = (
           errorMessage = $t('ui.fallback.http.internalServerError');
         }
       }
+      console.log(errorMessage, error);
+
       makeErrorMessage?.(errorMessage, error);
       return Promise.reject(error);
     },

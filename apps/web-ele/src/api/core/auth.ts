@@ -35,37 +35,46 @@ export namespace AuthApi {
     image: string;
   }
 }
+export async function loginApi(data: AuthApi.LoginParams) {
+  return requestClient.post<AuthApi.LoginResult>('/auth/login', {
+    selectAccount: 'vben',
+    username: 'vben',
+    password: '123456',
+    captcha: 'true',
+  });
+}
 
 /**
  * 登录
  */
-export async function loginApi(
-  data: AuthApi.LoginParams,
-  headers?: Record<string, string>,
-) {
-  // Construct URL parameters as per curl example: ?grantType=...&account=...
-  // However, usually post body is preferred. The curl shows query params AND body?
-  // "post请求head里参数... 入参：... grantType..."
-  // It seems it accepts form-urlencoded or query params. Let's try sending as query params for safety as shown in curl URL,
-  // or checks if `requestClient` supports form-urlencoded.
-  // The interface says "Content-Type String application/x-www-form-urlencoded".
-  // Let's use `params` to send as query strings for now, or `data` if we format it.
 
-  return requestClient.post<AuthApi.LoginResult>('/blade-auth/token', null, {
-    params: data,
-    headers: {
-      Authorization: 'Basic c2FiZXI6c2FiZXJfc2VjcmV0',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      ...headers,
-    },
-  });
-}
+// export async function loginApi(
+//   data: AuthApi.LoginParams,
+//   headers?: Record<string, string>,
+// ) {
+//   // Construct URL parameters as per curl example: ?grantType=...&account=...
+//   // However, usually post body is preferred. The curl shows query params AND body?
+//   // "post请求head里参数... 入参：... grantType..."
+//   // It seems it accepts form-urlencoded or query params. Let's try sending as query params for safety as shown in curl URL,
+//   // or checks if `requestClient` supports form-urlencoded.
+//   // The interface says "Content-Type String application/x-www-form-urlencoded".
+//   // Let's use `params` to send as query strings for now, or `data` if we format it.
+
+//   return requestClient.post<AuthApi.LoginResult>('/operation-auth/token', null, {
+//     params: data,
+//     headers: {
+//       Authorization: 'Basic c2FiZXI6c2FiZXJfc2VjcmV0',
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       ...headers,
+//     },
+//   });
+// }
 
 /**
  * 获取验证码
  */
 export async function getCaptchaApi() {
-  return requestClient.get<AuthApi.CaptchaResult>('/blade-auth/captcha', {
+  return requestClient.get<AuthApi.CaptchaResult>('/operation-auth/captcha', {
     headers: {
       Authorization: 'Basic c2FiZXI6c2FiZXJfc2VjcmV0',
     },
@@ -77,7 +86,7 @@ export async function getCaptchaApi() {
  */
 export async function logoutApi() {
   const accessStore = useAccessStore();
-  return requestClient.post('/blade-auth/logout', null, {
+  return requestClient.post('/operation-auth/logout', null, {
     headers: {
       Authorization: 'Basic c2FiZXI6c2FiZXJfc2VjcmV0',
       'Blade-Auth': `bearer ${accessStore.accessToken}`,

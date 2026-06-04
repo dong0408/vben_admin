@@ -9,5 +9,12 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: import.meta.env.VITE_APP_TITLE,
+    enablePreferences: true, // 启用偏好设置
+  },
+  copyright: {
+    settingShow: false,
+  },
+  widget: {
+    notification: true, // 关闭通知
   },
 });

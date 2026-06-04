@@ -13,6 +13,16 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard',
     children: [
       {
+        name: 'Welcome',
+        path: '/welcome',
+        component: () => import('#/views/dashboard/welcome/index.vue'),
+        meta: {
+          affixTab: true,
+          icon: 'lucide:smile',
+          title: '欢迎页',
+        },
+      },
+      {
         name: 'Analytics',
         path: '/analytics',
         component: () => import('#/views/dashboard/analytics/index.vue'),

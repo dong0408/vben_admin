@@ -22,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
   const loginLoading = ref(false);
 
   const publicKey =
-    '04969f1a494fafc1e5075dd0562924d773dbcefb726f11ac45adc4abea445a8fec6ef75266070f9c20782c9b686c992d83b5f5670bfe6f56f5e05a1e9ac53a2a4f';
+    '04d6368559f9a9ff530da377ee7ae784ecf87d45b8b0ade74289d97fea2343d63cebd9e9626b42b78d396c726c6bee22b174b1b31814562dd8872b157cca2fe577';
 
   /**
    * 异步处理登录操作
