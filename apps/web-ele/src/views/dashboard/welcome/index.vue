@@ -82,13 +82,15 @@ const goDashboard = () => {
 
 @keyframes float {
   0% {
-    transform: translateY(0px) scale(1);
+    transform: translateY(0) scale(1);
   }
+
   50% {
     transform: translateY(-15px) scale(1.02);
   }
+
   100% {
-    transform: translateY(0px) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 </style>

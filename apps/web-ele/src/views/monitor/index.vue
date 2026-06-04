@@ -1092,24 +1092,27 @@ function simulateMovement() {
 /* 利用原生 CSS 为仪表盘增加拟真悬浮感与投影效果 */
 .shadow-lg {
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.5),
-    0 4px 6px -2px rgba(0, 0, 0, 0.25);
+    0 10px 15px -3px rgb(0 0 0 / 50%),
+    0 4px 6px -2px rgb(0 0 0 / 25%);
 }
 
 /* 自定义滚动条风格 */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(255 255 255 / 2%);
   border-radius: 4px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgb(59 130 246 / 30%);
   border-radius: 4px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.6);
+  background: rgb(59 130 246 / 60%);
 }
 </style>
 
@@ -1130,9 +1133,9 @@ function simulateMovement() {
   height: 36px;
   margin-top: -18px;
   margin-left: -18px;
+  border: 2px solid rgb(239 68 68 / 85%);
   border-radius: 50%;
-  border: 2px solid rgba(239, 68, 68, 0.85);
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 12px rgb(239 68 68 / 50%);
   opacity: 0;
   transform: scale(0.4);
   animation: alert-ripple-expand 2.1s linear infinite;
@@ -1140,12 +1143,13 @@ function simulateMovement() {
 
 @keyframes alert-ripple-expand {
   0% {
-    transform: scale(0.4);
     opacity: 0.9;
+    transform: scale(0.4);
   }
+
   100% {
-    transform: scale(5);
     opacity: 0;
+    transform: scale(5);
   }
 }
 </style>

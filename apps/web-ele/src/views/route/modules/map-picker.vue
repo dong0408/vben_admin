@@ -371,9 +371,9 @@ defineExpose({ clearAll, undoLast });
 
 .tools {
   display: flex;
-  align-items: center;
-  gap: 12px;
   flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
 }
 
 .region-select {
@@ -390,9 +390,9 @@ defineExpose({ clearAll, undoLast });
   position: relative;
   width: 100%;
   height: 380px;
+  overflow: hidden;
   border: 1px solid var(--el-border-color-light, #e5e7eb);
   border-radius: 6px;
-  overflow: hidden;
 }
 
 .map-box {
@@ -402,36 +402,36 @@ defineExpose({ clearAll, undoLast });
 
 .tip {
   position: absolute;
-  left: 12px;
   bottom: 10px;
+  left: 12px;
   padding: 4px 10px;
   font-size: 12px;
   color: #fff;
-  background: rgba(30, 41, 59, 0.7);
-  border-radius: 4px;
   pointer-events: none;
+  background: rgb(30 41 59 / 70%);
+  border-radius: 4px;
 }
 
 .point-list {
-  border: 1px solid var(--el-border-color-light, #e5e7eb);
-  border-radius: 6px;
   max-height: 180px;
   overflow: auto;
+  border: 1px solid var(--el-border-color-light, #e5e7eb);
+  border-radius: 6px;
 }
 
 .point-list .header {
   display: flex;
   justify-content: space-between;
   padding: 8px 12px;
-  background: var(--el-fill-color-light, #f5f7fa);
   font-size: 13px;
   font-weight: 500;
+  background: var(--el-fill-color-light, #f5f7fa);
   border-bottom: 1px solid var(--el-border-color-lighter, #f0f0f0);
 }
 
 .point-list .count {
-  color: var(--el-color-primary, #409eff);
   font-family: 'JetBrains Mono', monospace;
+  color: var(--el-color-primary, #409eff);
 }
 
 .point-list .empty {
@@ -445,11 +445,11 @@ defineExpose({ clearAll, undoLast });
 
 .point-list .item {
   display: flex;
-  align-items: center;
   gap: 10px;
+  align-items: center;
   padding: 6px 12px;
-  border-bottom: 1px dashed var(--el-border-color-lighter, #f0f0f0);
   font-size: 12px;
+  border-bottom: 1px dashed var(--el-border-color-lighter, #f0f0f0);
 }
 
 .point-list .item:last-child {
@@ -458,16 +458,16 @@ defineExpose({ clearAll, undoLast });
 
 .point-list .index {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 22px;
   height: 22px;
-  background: #3b82f6;
-  color: #fff;
-  border-radius: 50%;
   font-size: 12px;
   font-weight: bold;
-  flex-shrink: 0;
+  color: #fff;
+  background: #3b82f6;
+  border-radius: 50%;
 }
 
 .point-list .coord {

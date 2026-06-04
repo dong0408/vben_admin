@@ -88,7 +88,7 @@ export function generateMockVehicles(count = 1000): VehicleData[] {
     // 70% 行驶 / 20% 停止 / 10% 离线，让大屏「动」起来
     const r = Math.random();
     const status: VehicleData['status'] =
-      r < 0.7 ? 'running' : (r < 0.9 ? 'stopped' : 'offline');
+      r < 0.7 ? 'running' : r < 0.9 ? 'stopped' : 'offline';
 
     vehicles.push({
       id: `V${String(i + 1).padStart(4, '0')}`,
